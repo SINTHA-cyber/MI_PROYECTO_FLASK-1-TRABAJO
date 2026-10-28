@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
+app = Flask(_name_)
 
 @app.route("/")
 
@@ -12,45 +12,37 @@ def inicio():
 
 def ejercicio1():
 
-    nombre = ""
+    promedio = None
 
-    total = 0
-
-    descuento = 0
-
-    total_pagar = 0
+    estado = ""
 
     if request.method == "POST":
 
-        nombre = request.form["nombre"]
+        nota1 = float(request.form["nota1"])
 
-        edad = int(request.form["edad"])
+        nota2 = float(request.form["nota2"])
 
-        cantidad = int(request.form["cantidad"])
+        nota3 = float(request.form["nota3"])
 
-        total = cantidad * 9000
+        asistencia = float(request.form["asistencia"])
 
-        if 18 <= edad <= 30:
+        promedio = round((nota1 + nota2 + nota3) / 3, 1)
 
-            descuento = total * 0.15
+        if promedio >= 40 and asistencia >= 75:
 
-        elif edad > 30:
+            estado = "APROBADO"
 
-            descuento = total * 0.25
+        else:
 
-        total_pagar = total - descuento
+            estado = "REPROBADO"
 
     return render_template(
 
         "ejercicio1.html",
 
-        nombre=nombre,
+        promedio=promedio,
 
-        total=total,
-
-        descuento=descuento,
-
-        total_pagar=total_pagar
+        estado=estado
 
     )
 
@@ -58,28 +50,34 @@ def ejercicio1():
 
 def ejercicio2():
 
-    mensaje = ""
+    nombre_mayor = ""
+
+    cantidad_caracteres = 0
 
     if request.method == "POST":
 
-        usuario = request.form["usuario"]
+        nombre1 = request.form["nombre1"].strip()
 
-        clave = request.form["clave"]
+        nombre2 = request.form["nombre2"].strip()
 
-        if usuario == "juan" and clave == "admin":
+        nombre3 = request.form["nombre3"].strip()
 
-            mensaje = "Bienvenido administrador juan"
+        nombres = [nombre1, nombre2, nombre3]
 
-        elif usuario == "pepe" and clave == "user":
+        nombre_mayor = max(nombres, key=len)
 
-            mensaje = "Bienvenido usuario pepe"
+        cantidad_caracteres = len(nombre_mayor)
 
-        else:
+    return render_template(
 
-            mensaje = "Usuario o contraseña incorrectos"
+        "ejercicio2.html",
 
-    return render_template("ejercicio2.html", mensaje=mensaje)
+        nombre_mayor=nombre_mayor,
 
-if __name__ == "__main__":
+        cantidad_caracteres=cantidad_caracteres
+
+    )
+
+if _name_ == "_main_":
 
     app.run(debug=True)
